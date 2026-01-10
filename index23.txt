@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Project By Christ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- THEMA GALAXY + RGB -->
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0a0f2d, #020617 70%);
+      background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #e8ecff;
+      padding: 20px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('https://files.catbox.moe/9iuraa.jpeg');
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(10, 15, 40, 0.75);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(180, 200, 255, 0.25);
+      box-shadow: 0 0 40px rgba(120, 160, 255, 0.35);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #dbe8ff;
+      text-shadow: 0 0 12px #5ea8ff;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #bcd0ff;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(40, 60, 120, 0.7), rgba(10, 20, 60, 0.7));
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      border: 1px solid rgba(150, 180, 255, 0.4);
+      transition: 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.15), transparent 60%);
+      opacity: 0;
+      transition: 0.25s ease;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 20px rgba(120, 160, 255, 0.5);
+    }
+
+    .card.active {
+      border-color: #7ab8ff;
+      box-shadow: 0 0 25px rgba(120, 160, 255, 0.8);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e8f0ff;
+    }
+
+    .info-box {
+      margin-top: 20px;
+      background: rgba(10, 20, 50, 0.7);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(150, 180, 255, 0.3);
+    }
+
+    .info-label {
+      color: #bcd0ff;
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e8ecff;
+    }
+
+    .upload-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 0;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    @media (max-width: 720px) {
+      .upload-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .preview-box {
+      border: 1px dashed rgba(180, 200, 255, 0.5);
+      background: rgba(10, 20, 50, 0.5);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      color: #bcd0ff;
+    }
+
+    .preview-box img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #ffffff;
+      background: linear-gradient(90deg, #5ea8ff, #ffffff, #5ea8ff);
+      background-size: 300%;
+      transition: 0.3s ease;
+      box-shadow: 0 0 15px rgba(120, 160, 255, 0.6);
+    }
+
+    .btn:hover {
+      background-position: 100%;
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(160, 200, 255, 0.9);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(180, 200, 255, 0.4);
+    }
+
+    .status {
+      font-size: 0.85rem;
+      color: #bcd0ff;
+    }
+
+    .status.success {
+      color: #7affc4;
+    }
+
+    .status.error {
+      color: #ff8b8b;
+    }
+
+    .notes-card {
+      background: linear-gradient(145deg, rgba(40, 60, 120, 0.7), rgba(10, 20, 60, 0.7));
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(150, 180, 255, 0.4);
+      margin-top: 20px;
+    }
+
+    .notes-card label {
+      display: block;
+      color: #dbe8ff;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .notes-card textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(10, 20, 50, 0.7);
+      border: 1px solid rgba(150, 180, 255, 0.3);
+      border-radius: 10px;
+      color: #e8ecff;
+      font-family: "Poppins", system-ui, sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 80px;
+      transition: 0.2s ease;
+    }
+
+    .notes-card textarea:focus {
+      outline: none;
+      border-color: #7ab8ff;
+      box-shadow: 0 0 10px rgba(120, 160, 255, 0.3);
+    }
+
+    .note-cards {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .note-card {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(150,180,255,0.12);
+      color: #bcd0ff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .note-card.active {
+      background: linear-gradient(90deg, #5ea8ff20, #5ea8ff10);
+      border-color: #7ab8ff;
+      box-shadow: 0 0 10px rgba(90,140,255,0.06);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Payment Chris Store</h1>
+    <div class="subtitle">Project By Chris Official, Harap sertakan bukti pembayaran.</div>
+
+    <!-- PAYMENT CARDS -->
+    <div class="cards">
+      <div class="card" data-method="OVO" data-number="085811454916" data-name="Christandy K">
+        <div class="card-title">OVO</div>
+      </div>
+
+      <div class="card" data-method="GOPAY" data-number="085811454916" data-name="Christandy K">
+        <div class="card-title">Gopay</div>
+      </div>
+
+      <div class="card" data-method="DANA" data-number="085811454916" data-name="Christandy K">
+        <div class="card-title">Dana</div>
+      </div>
+
+      <!-- QRIS PAKAI GAMBAR -->
+      <div class="card" data-method="QRIS" data-number="IMG" data-name="Christandy K" data-img="https://files.catbox.moe/eq9h6w.jpeg">
+        <div class="card-title">QRIS</div>
+      </div>
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="info-box">
+      <div class="info-label">Metode pembayaran</div>
+      <div class="info-value" id="infoMethod">Belum dipilih</div>
+
+      <div class="info-label">Tujuan</div>
+      <div class="info-value" id="infoNumber">-</div>
+
+      <div class="info-label">Atas nama</div>
+      <div class="info-value" id="infoName">-</div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div style="margin-top:20px;">
+      <label style="color:#bcd0ff; font-size:0.9rem; display:block; margin-bottom:10px;">Bukti Pembayaran</label>
+      <div class="upload-section">
+        <div>
+          <input type="file" id="proofFile" accept="image/*" style="width:100%; padding:8px; background:rgba(10,20,50,0.7); border:1px solid rgba(150,180,255,0.3); border-radius:8px; color:#bcd0ff; cursor:pointer;" />
+        </div>
+
+        <div class="preview-box" id="previewBox">
+          Belum ada bukti diupload.
+        </div>
+      </div>
+
+      <label style="color:#bcd0ff; font-size:0.9rem; display:block; margin-top:20px; margin-bottom:10px;">Catatan Tambahan</label>
+      <div style="font-size:0.85rem; color:#bcd0ff; margin-bottom:8px;">Klik preset untuk memasukkan teks, atau ketik sendiri di bawah.</div>
+      <div class="note-cards" id="noteCards">
+        <div class="note-card" data-note="Sudah transfer - mohon cek.">Sudah transfer</div>
+        <div class="note-card" data-note="Mohon konfirmasi penerimaan.">Mohon konfirmasi</div>
+        <div class="note-card" data-note="Pembayaran lunas. Terima kasih.">Pembayaran lunas</div>
+        <div class="note-card" data-note="Saya melakukan DP, sisanya akan dilunasi kemudian.">DP</div>
+        <div class="note-card" data-note="Silahkan cek ke akun Anda">Silahkan cek akun</div>
+      </div>
+
+      <div class="card" style="border:1px dashed rgba(180,200,255,0.5); background:rgba(10,20,50,0.5); padding:16px;">
+        <textarea id="customText" placeholder="Silahkan cek ke akun Anda" style="width:100%; min-height:100px; background:rgba(10,20,50,0.9); border:1px solid rgba(150,180,255,0.3); border-radius:8px; color:#bcd0ff; padding:10px; font-family:'Poppins',sans-serif; font-size:0.95rem;"></textarea>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+      <button class="btn btn-secondary" id="resetBtn">Reset</button>
+
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="status" id="statusText"></span>
+        <button class="btn" id="sendBtn">Kirim ke Telegram</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const TELEGRAM_BOT_TOKEN = "8513599257:AAG7L5JFdcaJDuaw8IjeXQTVbfXOscYRwqo";
+    const TELEGRAM_CHAT_ID = "-1003594796511";
+
+    const cards = document.querySelectorAll(".card");
+    const infoMethod = document.getElementById("infoMethod");
+    const infoNumber = document.getElementById("infoNumber");
+    const infoName = document.getElementById("infoName");
+    const proofFileInput = document.getElementById("proofFile");
+    const previewBox = document.getElementById("previewBox");
+    const customText = document.getElementById("customText");
+    const sendBtn = document.getElementById("sendBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const statusText = document.getElementById("statusText");
+
+    let selected = {
+      method: null,
+      number: null,
+      name: null,
+      file: null,
+      img: null
+    };
+
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        cards.forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+
+        selected.method = card.dataset.method;
+        selected.number = card.dataset.number;
+        selected.name = card.dataset.name;
+        selected.img = card.dataset.img || null;
+
+        infoMethod.textContent = selected.method;
+
+        if (selected.method === "QRIS") {
+          infoNumber.innerHTML = `<img src="${selected.img}" style="max-width:180px;border-radius:12px;">`;
+        } else {
+          infoNumber.textContent = selected.number;
+        }
+
+        infoName.textContent = selected.name;
+      });
+    });
+
+    proofFileInput.addEventListener("change", () => {
+      const file = proofFileInput.files[0];
+      selected.file = file || null;
+
+      if (!file) {
+        previewBox.innerHTML = "Belum ada bukti diupload.";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewBox.innerHTML = `<img src="${e.target.result}">`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      cards.forEach(c => c.classList.remove("active"));
+      selected = { method: null, number: null, name: null, file: null, img: null };
+      infoMethod.textContent = "Belum dipilih";
+      infoNumber.textContent = "-";
+      infoName.textContent = "-";
+      proofFileInput.value = "";
+      previewBox.innerHTML = "Belum ada bukti diupload.";
+      customText.value = "";
+      statusText.textContent = "";
+    });
+
+    async function sendToTelegram() {
+      if (!selected.method) {
+        statusText.textContent = "Pilih metode pembayaran.";
+        statusText.classList.add("error");
+        return;
+      }
+      // Jika metode QRIS, izinkan mengirim tanpa upload karena gambar QRIS diambil dari link
+      if (selected.method !== "QRIS" && !selected.file) {
+        statusText.textContent = "Upload bukti pembayaran.";
+        statusText.classList.add("error");
+        return;
+      }
+
+      const now = new Date().toLocaleString("id-ID");
+      const extra = customText.value.trim() ? customText.value.trim() : "Silahkan cek ke akun Anda";
+
+      const caption =
+        `Payment Confirmation\n` +
+        `Metode: ${selected.method}\n` +
+        `Tujuan: ${selected.method === "QRIS" ? "QRIS (Scan)" : selected.number}\n` +
+        `Atas nama: ${selected.name}\n` +
+        `Waktu: ${now}\n\n` +
+        `${extra}`;
+
+      const formData = new FormData();
+      formData.append("chat_id", TELEGRAM_CHAT_ID);
+      formData.append("caption", caption);
+
+      // Untuk QRIS, kirimkan gambar lewat URL (Catbox) jika tidak ada file uploaded
+      if (selected.method === "QRIS" && (!selected.file || typeof selected.file === 'string')) {
+        // Telegram menerima URL langsung di parameter 'photo'
+        formData.append("photo", selected.img);
+      } else {
+        formData.append("photo", selected.file);
+      }
+
+      sendBtn.disabled = true;
+      sendBtn.textContent = "Mengirim...";
+      statusText.textContent = "Mengirim...";
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) throw new Error();
+
+        statusText.textContent = "Sukses mengirim, silahkan confirm ke owner";
+        statusText.classList.add("success");
+        sendBtn.textContent = "Terkirim";
+      } catch {
+        statusText.textContent = "Gagal mengirim. Server Eror Crash";
+        statusText.classList.add("error");
+        sendBtn.textContent = "Send Bukti";
+      }
+
+      sendBtn.disabled = false;
+    }
+
+    sendBtn.addEventListener("click", sendToTelegram);
+  </script>
+</body>
+</html>
