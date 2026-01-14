@@ -305,18 +305,8 @@
       </div>
 
       <label style="color:#bcd0ff; font-size:0.9rem; display:block; margin-top:20px; margin-bottom:10px;">Catatan Tambahan</label>
-      <div style="font-size:0.85rem; color:#bcd0ff; margin-bottom:8px;">Klik preset untuk memasukkan teks, atau ketik sendiri di bawah.</div>
-      <div class="note-cards" id="noteCards">
-        <div class="note-card" data-note="Sudah transfer - mohon cek.">Sudah transfer</div>
-        <div class="note-card" data-note="Mohon konfirmasi penerimaan.">Mohon konfirmasi</div>
-        <div class="note-card" data-note="Pembayaran lunas. Terima kasih.">Pembayaran lunas</div>
-        <div class="note-card" data-note="Saya melakukan DP, sisanya akan dilunasi kemudian.">DP</div>
-        <div class="note-card" data-note="Silahkan cek ke akun Anda">Silahkan cek akun</div>
-      </div>
 
-      <div class="card" style="border:1px dashed rgba(180,200,255,0.5); background:rgba(10,20,50,0.5); padding:16px;">
-        <textarea id="customText" placeholder="Silahkan cek ke akun Anda" style="width:100%; min-height:100px; background:rgba(10,20,50,0.9); border:1px solid rgba(150,180,255,0.3); border-radius:8px; color:#bcd0ff; padding:10px; font-family:'Poppins',sans-serif; font-size:0.95rem;"></textarea>
-      </div>
+      <textarea id="customText" placeholder="Ketik catatan Anda di sini..." style="width:100%; min-height:100px; background:rgba(10,20,50,0.9); border:1px solid rgba(150,180,255,0.3); border-radius:8px; color:#bcd0ff; padding:12px; font-family:'Poppins',sans-serif; font-size:0.95rem; box-sizing:border-box; transition:0.2s ease;"></textarea>
     </div>
 
     <!-- ACTIONS -->
@@ -325,7 +315,7 @@
 
       <div style="display:flex; align-items:center; gap:10px;">
         <span class="status" id="statusText"></span>
-        <button class="btn" id="sendBtn">Kirim ke Telegram</button>
+        <button class="btn" id="sendBtn">Send Bukti</button>
       </div>
     </div>
   </div>
@@ -335,7 +325,7 @@
     const TELEGRAM_BOT_TOKEN = "8513599257:AAG7L5JFdcaJDuaw8IjeXQTVbfXOscYRwqo";
     const TELEGRAM_CHAT_ID = "-1003594796511";
 
-    const cards = document.querySelectorAll(".card");
+    const cards = document.querySelectorAll(".card[data-method]");
     const infoMethod = document.getElementById("infoMethod");
     const infoNumber = document.getElementById("infoNumber");
     const infoName = document.getElementById("infoName");
@@ -390,6 +380,17 @@
         previewBox.innerHTML = `<img src="${e.target.result}">`;
       };
       reader.readAsDataURL(file);
+    });
+
+    // Make textarea focusable
+    customText.addEventListener("focus", () => {
+      customText.style.borderColor = "#7ab8ff";
+      customText.style.boxShadow = "0 0 15px rgba(120, 160, 255, 0.5)";
+    });
+
+    customText.addEventListener("blur", () => {
+      customText.style.borderColor = "rgba(150,180,255,0.3)";
+      customText.style.boxShadow = "none";
     });
 
     resetBtn.addEventListener("click", () => {
@@ -452,7 +453,7 @@
 
         if (!res.ok) throw new Error();
 
-        statusText.textContent = "Sukses mengirim, silahkan confirm ke owner";
+        statusText.textContent = "Sukses mengirim Bukti Payment";
         statusText.classList.add("success");
         sendBtn.textContent = "Terkirim";
       } catch {
